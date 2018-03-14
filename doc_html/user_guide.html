@@ -1,0 +1,534 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+<Title> Tango Device Server User's Guide </Title>
+</HEAD>
+<BODY TEXT="#000000" BGCOLOR="#FFFFFF" LINK="#0000FF" VLINK="#7F00FF" ALINK="#FF0000">
+
+<P><!-------TITLE------></P>
+<TABLE BORDER="0" WIDTH="100%">
+    <TR>
+        <TD ALIGN="left">
+			<A HREF="http://www.esrf.fr/" TARGET=new>
+			<IMG SRC="http://www.esrf.fr/gifs/logo/80.gif" BORDER=0 Height="60"></A>
+		</Td>
+        <TD ALIGN="center">
+			<A HREF="http://www.elettra.trieste.it/" TARGET=new>
+			<IMG SRC="http://www.esrf.fr/computing/cs/tango/elettra_logo.gif" BORDER=0 Height="60"></A>
+
+		</Td>
+        <TD ALIGN="center">
+			<A HREF="http://www.synchrotron-soleil.fr/" TARGET=new>
+			<IMG SRC="http://www.esrf.fr/computing/cs/tango/soleil_logo.gif" BORDER=0 Height="60"></A>
+		</Td>
+        <TD ALIGN="right">
+			<A HREF="http://www.cells.es/" TARGET=new>
+			<IMG SRC="http://www.esrf.fr/computing/cs/tango/alba.jpg" BORDER=0 Height="54"></A>
+		</Td>
+        <TD ALIGN="right">
+			<A HREF="http://www.desy.de/html/home/index_eng.html" TARGET=new>
+			<IMG SRC="http://www.esrf.fr/computing/cs/tango/desy.gif" BORDER=0 Height="60"></A>
+		</Td>
+    	 <Td>
+			<H2><FONT COLOR="#7F00FF">
+			<Center><A HREF="http://www.tango-controls.org/" TARGET="_top">
+					 TANGO </a> <Br> Device Server
+			</Center></FONT>
+		</Td>
+    </TR>
+</TABLE>
+
+<HR WIDTH="100%"></H5>
+
+<Br>&nbsp;<Br><Br>&nbsp;<Br><Br>&nbsp;<Br><center><Table Border=2 Cellpadding=3 CELLSPACING=0 WIDTH="100%">
+<Tr><Td><Br>&nbsp;<Br>
+<center>
+<h1>
+VacuumController Device Server <Br>
+User's Guide<Br>&nbsp;<Br> <Br><Br>
+MKSGaugeController Class<Br>&nbsp;<Br></Td></Tr>
+</h1>
+<Tr><Td>
+<b><Center>Revision:  - Author: srubio <Br>
+ Implemented in Python
+</Center></b>
+</Td></Tr>
+</center>
+</Table>
+</center>
+<Br>
+<Br>
+<Br>
+<Br>
+<Br>&nbsp;<Br><Br>&nbsp;<Br>
+<h2>Introduction:</h2>
+<ul>
+	<p>This device requires <a href="http://www.tango-controls.org/Documents/tools/fandango/fandango">Fandango module<a> to be available in the PYTHONPATH.</p>
+<p>This Device will manage the MKS 937A Gauge Controller through a SerialLine Tango Device Server.
+It will read Pressure for each Channel, Combination Channels, Modules installed, Firmware version and relays state.</p>
+
+<p>The right CVS command to download it is:<br>
+cvs -d:pserver:anonymous@tango-ds.cvs.sourceforge.net:/cvsroot/tango-ds co    -r first    VacuumController</p><Br>
+</ul>
+<Br>
+<Br>
+<Br>&nbsp;<Br><Br>
+<h2>Class Inheritance:</h2>
+	<ul>
+		<li> <a href="ftp://ftp.esrf.fr/pub/cs/tango/PyTango-3.0.1.pdf"> PyTango.Device_3Impl</a></li>
+		<ul>
+			<li> MKSGaugeController</li>
+			</ul>
+		</ul>
+	</ul>
+</ul>
+<Br>&nbsp;<Br>
+<h2>Description:</h2>
+
+</b>
+</center>
+
+
+<Center>
+This Device will manage the MKS 937A Gauge Controller through a SerialLine Tango Device Server.
+It will read Pressure for each Channel, Combination Channels, Modules installed, Firmware version and relays state.
+Last update: srubio@cells.es, 2007/09/20
+
+The right CVS command to download it is:
+cvs -d:pserver:anonymous@tango-ds.cvs.sourceforge.net:/cvsroot/tango-ds co    -r first    VacuumController
+<Br>
+<Br>
+</Center>
+
+
+</center>
+<Br>&nbsp;<Br><Br>&nbsp;<Br><h2>Properties:</h2>
+
+
+<Center>
+<Br> <Br> <Br> 
+<Table Border=2 Cellpadding=3 CELLSPACING=0 WIDTH="100%">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td COLSPAN=3> <Font Size=+2><Center><b>Class Properties</b></td></Font></Center>
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td><Center><b>Property name</b></td></Center>
+<Td><Center><b>Property type</b></td></Center>
+<Td><Center><b>Description</b></td></Center>
+
+<Tr><Td><b><a href=#Class_DefaultValues>Refresh </a></b></Td>
+<Td><Font Size=-1>Tango::DEV_LONG</Font></Td>
+<Td><Font Size=-1>Period (in seconds) for the internal refresh thread.</Font></Td></Tr>
+
+</Table>
+
+<Br> <Br> <Br> 
+<Table Border=2 Cellpadding=3 CELLSPACING=0 WIDTH="100%">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td COLSPAN=3> <Font Size=+2><Center><b>Device Properties</b></td></Font></Center>
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td><Center><b>Property name</b></td></Center>
+<Td><Center><b>Property type</b></td></Center>
+<Td><Center><b>Description</b></td></Center>
+<Tr><Td><b><a href=#Dev_DefaultValues>SerialLine </a></b></Td>
+<Td><Font Size=-1>Tango::DEV_STRING</Font></Td>
+<Td><Font Size=-1>SerialLine Device Server to connect with</Font></Td></Tr>
+
+<Tr><Td><b><a href=#Dev_DefaultValues>Protocol </a></b></Td>
+<Td><Font Size=-1>Tango::DEV_STRING</Font></Td>
+<Td><Font Size=-1>SerialLine Physical Protocol used (232/422/485)</Font></Td></Tr>
+
+<Tr><Td><b><a href=#Dev_DefaultValues>NChannels </a></b></Td>
+<Td><Font Size=-1>Tango::DEV_LONG</Font></Td>
+<Td><Font Size=-1>Number of Pressure Channels available</Font></Td></Tr>
+
+<Tr><Td><b><a href=#Dev_DefaultValues>NCombChannels </a></b></Td>
+<Td><Font Size=-1>Tango::DEV_LONG</Font></Td>
+<Td><Font Size=-1>Number of Combination Channels available</Font></Td></Tr>
+
+<Tr><Td><b><a href=#Dev_DefaultValues>Description </a></b></Td>
+<Td><Font Size=-1>Tango::DEV_STRING</Font></Td>
+<Td><Font Size=-1>This string field will appear in the status and can be used to add extra information about equipment location</Font></Td></Tr>
+
+</Table>
+
+</Center>
+<Br><Br><Br>
+<Br><Br><Br>
+
+<A name=Class_DefaultValues><!---  ---></a>
+<Font Size=+1>Class Properties Default Values:</Font><Br>
+<Table Border=2 Cellpadding=2 CELLSPACING=2>
+    <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+        <Td><b>Property Name</b></td>
+        <td><b>Default Values<</b>/td>
+    </Tr>
+    <Tr>
+        <Td>Refresh</Td>
+        <td>10</td>
+    </Tr>
+</Table>
+
+<Br><Br><Br>
+<A name=Dev_DefaultValues><!---  ---></a>
+<Font Size=+1>Device Properties Default Values:</Font><Br>
+<Table Border=2 Cellpadding=2 CELLSPACING=2>
+    <tr BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+        <Td><b>Property Name</b></td>
+        <td><b>Default Values</b></td>
+    </Tr>
+    <Tr>
+        <Td>SerialLine</Td>
+        <td>''
+</td>
+    </Tr>
+    <Tr>
+        <Td>Protocol</Td>
+        <td>'232'
+</td>
+    </Tr>
+    <Tr>
+        <Td>NChannels</Td>
+        <td>5</td>
+    </Tr>
+    <Tr>
+        <Td>NCombChannels</Td>
+        <td>2</td>
+    </Tr>
+    <Tr>
+        <Td>Description</Td>
+        <td>''
+</td>
+    </Tr>
+</Table>
+
+<Br><Br><Br>
+<Br> <Br> <Br> 
+
+
+</center>
+<Br>&nbsp;<Br><Br>&nbsp;<Br><h2>States:</h2>
+
+
+<Center>
+<Br> <Br> <Br> 
+<Table Border=2 Cellpadding=3 CELLSPACING=0 WIDTH="100%">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td COLSPAN=2> <Font Size=+2><Center><b>States</b></td></Font></Center>
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td><Center><b>Names</b></td></Center>
+<Td><Center><b>Descriptions</b></td></Center>
+<Tr><Td><b>INIT</b></Td>
+<Td><Font Size=-1>Hardware values not readed yet (all attributes not read yeat)</Font></Td></Tr>
+
+<Tr><Td><b>ON</b></Td>
+<Td><Font Size=-1>Everything works fine</Font></Td></Tr>
+
+<Tr><Td><b>OFF</b></Td>
+<Td><Font Size=-1>CCG channels switched off</Font></Td></Tr>
+
+<Tr><Td><b>UNKNOWN</b></Td>
+<Td><Font Size=-1>It's not possible to communicate (errors > n_attributes)</Font></Td></Tr>
+
+<Tr><Td><b>ALARM</b></Td>
+<Td><Font Size=-1>Pressure Interlock Enabled!</Font></Td></Tr>
+
+<Tr><Td><b>FAULT</b></Td>
+<Td><Font Size=-1>Both cable interlock enabled!</Font></Td></Tr>
+
+<Tr><Td><b>DISABLE</b></Td>
+<Td><Font Size=-1>Manual interlock enabled</Font></Td></Tr>
+
+
+
+
+</Table>
+</Center>
+
+
+</center>
+<Br>&nbsp;<Br><Br>&nbsp;<Br><h2>Attributes:</h2>
+
+
+<Br>
+<Table Border=2 Cellpadding=3 CELLSPACING=0 WIDTH="100%">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td COLSPAN=4> <Font Size=+2><Center><b>Scalar Attributes</b></td></Font></Center>
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td><Center><b>Attribute name</b></td></Center>
+<Td><Center><b>Data Type</b></td></Center>
+<Td><Center><b>R/W Type</b></td></Center>
+<Td><Center><b>Expert</b></td></Center>
+<Tr><Td><b>P1</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>P2</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>P3</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>P4</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>P5</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>C1</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>C2</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>ChannelValue</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>CombChannelState</b></Td>
+<Td><Center><Font Size=-1>DEV_STRING</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>CombChannelValue</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>FirmwareVersion</b></Td>
+<Td><Center><Font Size=-1>DEV_STRING</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>SerialLine</b></Td>
+<Td><Center><Font Size=-1>DEV_STRING</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>ModulesInstalled</b></Td>
+<Td><Center><Font Size=-1>DEV_STRING</Font></Center></Td><Td><Center><Font Size=-1>READ</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+</Table>
+</Center>
+<Br><Br><Br><Br><Br>
+<Table Border=2 Cellpadding=3 CELLSPACING=0 WIDTH="100%">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td COLSPAN=4> <Font Size=+2><Center><b>Spectrum Attributes</b></td></Font></Center>
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td><Center><b>Attribute name</b></td></Center>
+<Td><Center><b>Data Type</b></td></Center>
+<Td><Center><b>X Data Length</b></td></Center>
+<Td><Center><b>Expert</b></td></Center>
+<Tr><Td><b>ChannelState</b></Td>
+<Td><Center><Font Size=-1>DEV_STRING</Font></Center></Td><Td><Center><Font Size=-1>7</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+<Tr><Td><b>PressureValues</b></Td>
+<Td><Center><Font Size=-1>DEV_DOUBLE</Font></Center></Td><Td><Center><Font Size=-1>256</Font></Center></Td><Td><Center><Font Size=-1>No</Font></Center></Td></Tr>
+
+</Table>
+</Center>
+<Br><Br><Br><Br><Br>
+
+
+</center>
+<Br>&nbsp;<Br><Br>&nbsp;<Br><h2>Commands:</h2>
+
+
+<Center>
+<Br><Br>
+<A Href="DevCommandsFrame.html"> More Details on commands.... </a><Br>
+<Br> <Br>
+<Table Border=2 Cellpadding=3 CELLSPACING=0 WIDTH="100%">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td COLSPAN=3> <Font Size=+2><Center><b>Device Commands for Operator Level</b></td></Font></Center>
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td><Center><b>Command name</b></td></Center>
+<Td><Center><b>Argument In</b></td></Center>
+<Td><Center><b>Argument Out</b></td></Center>
+<Tr><Td><b>Init</b></Td>
+<Td><Font Size=-1>DEV_VOID</Font></Td>
+<Td><Font Size=-1>DEV_VOID</Font></Td>
+<Tr><Td><b>State</b></Td>
+<Td><Font Size=-1>DEV_VOID</Font></Td>
+<Td><Font Size=-1>DEV_STATE</Font></Td>
+<Tr><Td><b>Status</b></Td>
+<Td><Font Size=-1>DEV_VOID</Font></Td>
+<Td><Font Size=-1>CONST_DEV_STRING</Font></Td>
+<Tr><Td><b>getChannelState</b></Td>
+<Td><Font Size=-1>DEV_STRING</Font></Td>
+<Td><Font Size=-1>DEV_STRING</Font></Td>
+
+
+
+</Table></Center>
+<Br> <Br> <Br> 
+<Center>
+<Table Border=2 Cellpadding=3 CELLSPACING=0 WIDTH="100%">
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td COLSPAN=3> <Font Size=+2><Center><b>Device Commands for Expert Level Only</b></td></Font></Center>
+<TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor">
+<Td><Center><b>Command name</b></td></Center>
+<Td><Center><b>Argument In</b></td></Center>
+<Td><Center><b>Argument Out</b></td></Center>
+<Tr><Td><b>SendCommand</b></Td>
+<Td><Font Size=-1>DEV_STRING</Font></Td>
+<Td><Font Size=-1>DEV_STRING</Font></Td>
+<Tr><Td><b>CC_On</b></Td>
+<Td><Font Size=-1>DEV_STRING</Font></Td>
+<Td><Font Size=-1>DEV_STRING</Font></Td>
+<Tr><Td><b>CC_Off</b></Td>
+<Td><Font Size=-1>DEV_STRING</Font></Td>
+<Td><Font Size=-1>DEV_STRING</Font></Td>
+
+
+
+</Table></Center>
+
+</center>
+<Br>&nbsp;<Br>
+
+<Br>
+<Br>
+<Br>
+<A NAME="Init"><!-- --></A>
+<A NAME="Init"><!-- --></A>
+<h2>1 - Init</h2>
+<ul>
+<Li><Strong>Description: </Strong> This commands re-initialise a device keeping the same network connection.<Br>
+After an Init command executed on a device, it is not necessary for client to re-connect to the device.<Br>
+This command first calls the device <i> delete_device() </i>method and then execute its <i> init_device()</i> method.<Br>
+For C++ device server, all the memory allocated in the <i> nit_device() </i> method must be freed in the <i> delete_device() </i> method.<Br>
+The language device desctructor automatically calls the <i> delete_device() </i> method.<Br>&nbsp
+<Li><Strong>Argin:<Br>DEV_VOID</Strong>
+ : none.<Br>&nbsp
+<Li><Strong>Argout:<Br>DEV_VOID</Strong>
+ : none.<Br>&nbsp
+<Li><Strong>Command allowed for: </Strong><Ul>
+<Li>Tango::INIT<Li>Tango::ON<Li>Tango::OFF<Li>Tango::UNKNOWN<Li>Tango::ALARM<Li>Tango::FAULT<Li>Tango::DISABLE</Ul>
+<Br>&nbsp
+</ul><Br>
+<Br>
+<A NAME="State"><!-- --></A>
+<A NAME="State"><!-- --></A>
+<h2>2 - State</h2>
+<ul>
+<Li><Strong>Description: </Strong> This command gets the device state (stored in its <i>device_state</i> data member) and returns it to the caller.<Br>&nbsp
+<Li><Strong>Argin:<Br>DEV_VOID</Strong>
+ : none.<Br>&nbsp
+<Li><Strong>Argout:<Br>DEV_STATE</Strong>
+ : State Code<Br>&nbsp
+<Li><Strong>Command allowed for: </Strong><Ul>
+<Li>Tango::INIT<Li>Tango::ON<Li>Tango::OFF<Li>Tango::UNKNOWN<Li>Tango::ALARM<Li>Tango::FAULT<Li>Tango::DISABLE</Ul>
+<Br>&nbsp
+</ul><Br>
+<Br>
+<A NAME="Status"><!-- --></A>
+<A NAME="Status"><!-- --></A>
+<h2>3 - Status</h2>
+<ul>
+<Li><Strong>Description: </Strong> This command gets the device status (stored in its <i>device_status</i> data member) and returns it to the caller.<Br>&nbsp
+<Li><Strong>Argin:<Br>DEV_VOID</Strong>
+ : none.<Br>&nbsp
+<Li><Strong>Argout:<Br>CONST_DEV_STRING</Strong>
+ : Status description<Br>&nbsp
+<Li><Strong>Command allowed for: </Strong><Ul>
+<Li>Tango::INIT<Li>Tango::ON<Li>Tango::OFF<Li>Tango::UNKNOWN<Li>Tango::ALARM<Li>Tango::FAULT<Li>Tango::DISABLE</Ul>
+<Br>&nbsp
+</ul><Br>
+<Br>
+<A NAME="SendCommand"><!-- --></A>
+<A NAME="SendCommand"><!-- --></A>
+<h2>4 - SendCommand (for expert only)</h2>
+<ul>
+<Li><Strong>Description: </Strong> Sends a command directly to the device through the rs232 line
+<Br>&nbsp
+<Li><Strong>Argin:<Br>DEV_STRING</Strong>
+ : Command to send (literally)<Br>&nbsp
+<Li><Strong>Argout:<Br>DEV_STRING</Strong>
+ : Sends Serial Command and returns the answer received (literally)<Br>&nbsp
+<Li><Strong>Command allowed for: </Strong><Ul>
+<Li>Tango::INIT<Li>Tango::ON<Li>Tango::OFF<Li>Tango::UNKNOWN<Li>Tango::ALARM<Li>Tango::FAULT<Li>Tango::DISABLE</Ul>
+<Br>&nbsp
+</ul><Br>
+<Br>
+<A NAME="getChannelState"><!-- --></A>
+<A NAME="getChannelState"><!-- --></A>
+<h2>5 - getChannelState</h2>
+<ul>
+<Li><Strong>Description: </Strong> Gets the state for a channel
+<Br>&nbsp
+<Li><Strong>Argin:<Br>DEV_STRING</Strong>
+ : Channel name<Br>&nbsp
+<Li><Strong>Argout:<Br>DEV_STRING</Strong>
+ : Get State for Channel<Br>&nbsp
+<Li><Strong>Command allowed for: </Strong><Ul>
+<Li>Tango::INIT<Li>Tango::ON<Li>Tango::OFF<Li>Tango::UNKNOWN<Li>Tango::ALARM<Li>Tango::FAULT<Li>Tango::DISABLE</Ul>
+<Br>&nbsp
+</ul><Br>
+<Br>
+<A NAME="CC_On"><!-- --></A>
+<A NAME="CC_On"><!-- --></A>
+<h2>6 - CC_On (for expert only)</h2>
+<ul>
+<Li><Strong>Description: </Strong> Gets the state for a channel
+<Br>&nbsp
+<Li><Strong>Argin:<Br>DEV_STRING</Strong>
+ : Switchs On HighVoltage for a CC, arg should be ALL, CC1, CC2, P1 or P2<Br>&nbsp
+<Li><Strong>Argout:<Br>DEV_STRING</Strong>
+ : Switchs On HighVoltage for a CC,, arg should be ALL, CC1, CC2, P1 or P2<Br>&nbsp
+<Li><Strong>Command allowed for: </Strong><Ul>
+<Li>Tango::INIT<Li>Tango::ON<Li>Tango::OFF<Li>Tango::UNKNOWN<Li>Tango::ALARM<Li>Tango::FAULT<Li>Tango::DISABLE</Ul>
+<Br>&nbsp
+</ul><Br>
+<Br>
+<A NAME="CC_Off"><!-- --></A>
+<A NAME="CC_Off"><!-- --></A>
+<h2>7 - CC_Off (for expert only)</h2>
+<ul>
+<Li><Strong>Description: </Strong> Gets the state for a channel
+<Br>&nbsp
+<Li><Strong>Argin:<Br>DEV_STRING</Strong>
+ : Switchs Off HighVoltage for a CC, arg should be ALL, CC1, CC2, P1 or P2<Br>&nbsp
+<Li><Strong>Argout:<Br>DEV_STRING</Strong>
+ : Switchs Off HighVoltage for a CC,, arg should be ALL, CC1, CC2, P1 or P2<Br>&nbsp
+<Li><Strong>Command allowed for: </Strong><Ul>
+<Li>Tango::INIT<Li>Tango::ON<Li>Tango::OFF<Li>Tango::UNKNOWN<Li>Tango::ALARM<Li>Tango::FAULT<Li>Tango::DISABLE</Ul>
+<Br>&nbsp
+</ul><Br>
+<Br>
+
+</center>
+<Br>&nbsp;<Br><Br>&nbsp;<Br>
+
+<!--- html Footer --->
+
+<Center>
+<Font size=-1>
+<br>
+<br>
+<TABLE BORDER="1" WIDTH="100%">
+    <Tr>
+		<!--- Hosted by Sourceforge --->
+        <Td Align="Center">
+			<Font size=-1>
+			<b>TANGO</b> is an open source project hosted by :<br>
+			<A href="http://sourceforge.net" Target="new">
+					<IMG title="Sourceforge logo"
+						alt="Sourceforge logo small"
+						src="http://www.esrf.fr/computing/cs/tango/sourceforge.gif"
+						border=0> </a>
+			</Font>
+		</Td>
+		<!--- 2 Sourceforge Repositories --->
+		<Td Align="Center">
+			<Font size=-1>
+			Core and Tools :
+			<a href="http://tango-cs.cvs.sourceforge.net/tango-cs/" Target="new">
+			CVS repository</a> on
+			<a href="https://sourceforge.net/projects/tango-cs" Target=new>
+			tango-cs project</a>
+
+			<br>
+
+			Device Servers :
+			<a href="http://tango-ds.cvs.sourceforge.net/tango-ds/" Target="new">
+					CVS repository</a> on
+			<a href="https://sourceforge.net/projects/tango-ds" Target=new>
+					tango-ds project</a>
+			</Font>
+		</Td>
+    </Tr>
+</Table>
+</Font>
+</Center>
+</body>
+</html>
