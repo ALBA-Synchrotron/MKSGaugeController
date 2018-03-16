@@ -1164,7 +1164,7 @@ MKSGaugeController.read_Missreadings = manageMissreadings
 #    MKSGaugeController class main method
 #
 #==================================================================
-if __name__ == '__main__':
+def main():
     try:
         py = PyTango.PyUtil(sys.argv)
         py.add_TgClass(MKSGaugeControllerClass,MKSGaugeController,'MKSGaugeController')
@@ -1177,3 +1177,6 @@ if __name__ == '__main__':
         print '-------> Received a DevFailed exception:',traceback.format_exc()
     except Exception,e:
         print '-------> An unforeseen exception occured....',traceback.format_exc()
+        
+if __name__ == '__main__':
+    main()

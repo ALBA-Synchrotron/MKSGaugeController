@@ -57,15 +57,15 @@ package_data = {'': [
 
 ## Launcher scripts
 scripts = [
-  DS,
+  #DS,
   #'./bin/'+DS,
   ]
 
 ## This option relays on DS.py having a main() method
 entry_points = {
-        #'console_scripts': [
-            #'%s = %s.%s:main'%(DS,DS,DS),
-        #],
+        'console_scripts': [
+            '%s = %s.%s:main'%(DS,DS,DS),
+        ],
 }
 
 setup(
