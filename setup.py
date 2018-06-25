@@ -33,7 +33,7 @@ To tune some options:
 -------------------------------------------------------------------------------
 """
 
-print(__doc__)
+#print(__doc__)
 
 license = 'GPL-3.0'
 install_requires = ['fandango',
