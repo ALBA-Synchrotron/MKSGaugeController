@@ -1,0 +1,144 @@
+variables:
+  DEBIAN_FRONTEND: noninteractive
+  DOCKER_DRIVER: overlay2
+  ARTIFACTS_DIR: "$CI_PROJECT_DIR/dist"
+  # Set up variables for pushing the generated tags
+  DEPLOY_GIT_REPO: "git.cells.es/$CI_PROJECT_PATH.git"
+  BOT_NAME: debpack
+  # BOT_PASS (set this up  in project->settings->CI/CD settings->Secret variables)
+  # ALBA HACK:
+  GIT_SSL_NO_VERIFY: 'true'
+  DEBFULLNAME: "CI Boot"
+  DEBEMAIL: "controls@cells.es"
+
+
+stages:
+  - ups_build
+  - pkg_build
+  - pkg_test
+  - pkg_push
+  - deploy_staging
+  - deploy_production
+
+
+prepare_debrepo:
+  image: cmft/debpack-ci
+  stage: ups_build
+  artifacts:
+    expire_in: 1 day
+    name: "$CI_JOB_NAME"
+    paths:
+      - ${ARTIFACTS_DIR}/tmprepo
+
+  script:
+    # create & configure the temporary repo
+    - git clone . ${ARTIFACTS_DIR}/tmprepo
+    - git push ${ARTIFACTS_DIR}/tmprepo remotes/origin/debian/stretch:refs/heads/debian/stretch
+#    - git push ${ARTIFACTS_DIR}/tmprepo remotes/origin/debian/sid:refs/heads/debian/sid
+    - if [[ $CI_COMMIT_REF_NAME =~ ^debian/.*$ ]]; 
+        then echo "We  are already in a debian branch. Nothing more to do." ;
+        exit 0;
+        fi
+    - cd ${ARTIFACTS_DIR}/tmprepo
+    - git checkout -b upstream
+    # tag upstream
+    - UPVERSION=`python setup.py --version`+git`date +%Y%m%d`.$CI_PIPELINE_ID.`git rev-parse --short=6 upstream`
+    - git tag upstream/$UPVERSION 
+    # merge and update debian/sid branch
+#    - git checkout debian/sid
+#    - git merge -X theirs --no-ff --no-edit -m "Merge upstream/$UPVERSION into debian/sid" 
+#        -m "[ci skip]" upstream/$UPVERSION
+#    - gbp dch --commit --commit-msg="Update changelog for %(version)s release [ci skip]" 
+#        --spawn-editor=never --debian-branch=debian/sid --upstream-branch=upstream 
+#        --release --new-version=$UPVERSION-1 --git-log='--first-parent'
+#    - cat debian/changelog
+    # merge and update debian/stretch branch
+    - git checkout debian/stretch
+    - git merge -X theirs --no-ff --no-edit -m "Merge upstream/$UPVERSION into debian/stretch" 
+        -m "[ci skip]" upstream/$UPVERSION
+    - gbp dch --commit --commit-msg="Update changelog for %(version)s release [ci skip]" 
+        --spawn-editor=never --debian-branch=debian/stretch --upstream-branch=upstream 
+        --release  --distribution=stretch-backports --new-version=$UPVERSION-0~bpo9+0~alba+1 
+        --git-log='--first-parent' 
+    - cat debian/changelog
+  except:
+    - tags
+
+
+build_package_stretch:
+  image: debian:stretch
+  stage: pkg_build
+  dependencies: 
+    - prepare_debrepo
+  artifacts:
+    expire_in: 1 day
+    name: "$CI_JOB_NAME"
+    paths:
+      - ${ARTIFACTS_DIR}/stretch
+      - ${ARTIFACTS_DIR}/tmprepo
+  before_script:
+    - apt-get update
+    - apt-get install eatmydata -y
+    - eatmydata apt-get install git-buildpackage -y
+  script:
+    - cd ${ARTIFACTS_DIR}/tmprepo
+    - git checkout debian/stretch
+    - eatmydata apt-get build-dep -y .
+    - DEB_BUILD_OPTIONS=nocheck gbp buildpackage --git-tag --git-debian-branch=debian/stretch 
+        --git-export-dir=${ARTIFACTS_DIR}/stretch -us -uc
+  except:
+    - tags
+
+
+lintian_stretch:
+  image: cmft/debpack-ci
+  stage: pkg_test
+  dependencies: 
+    - build_package_stretch
+  before_script:
+    - apt-get update && apt-get install lintian -y --no-install-recommends
+  script:
+    - lintian -iI --suppress-tags backports-upload-has-incorrect-version-number,backports-changes-missing,changelog-should-mention-nmu ${ARTIFACTS_DIR}/stretch/*.changes 
+  allow_failure: true
+  except:
+    - tags
+    
+
+push_to_pkg_repo:
+  image: alpine:latest
+  stage: pkg_push
+  dependencies: 
+#    - build_package_sid
+    - build_package_stretch
+  before_script:
+    # prior to uploading, push the repo changes
+    - apk update && apk add git
+  script:
+    - cd ${ARTIFACTS_DIR}/tmprepo
+#   - git push https://$BOT_NAME:$BOT_PASS@$DEPLOY_GIT_REPO debian/sid:debian/sid
+    - git push https://$BOT_NAME:$BOT_PASS@$DEPLOY_GIT_REPO debian/stretch:debian/stretch
+    - git push https://$BOT_NAME:$BOT_PASS@$DEPLOY_GIT_REPO --tags 
+  when: manual
+  allow_failure: false
+  except:
+    - tags
+
+
+upload_to_staging:
+  image: dockerrg.cells.es/debpack-ci:latest
+  stage: deploy_staging
+  script:
+    - upload2aptly "aptly:$BOT_PASS" "deb9_staging" ${ARTIFACTS_DIR}/stretch/*.changes
+  except:
+    - tags
+
+
+promote_to_production:
+  image: dockerrg.cells.es/debpack-ci:latest
+  stage: deploy_production
+  script:
+    - movePackage  "aptly:$BOT_PASS" "deb9_staging" "deb9_production" ${ARTIFACTS_DIR}/stretch/*.changes
+  when: manual
+  except:
+    - tags
+
