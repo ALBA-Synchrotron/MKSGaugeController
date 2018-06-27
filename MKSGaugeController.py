@@ -69,6 +69,7 @@ from fandango.objects import self_locked
 import fandango.functional as fun
 
 from VacuumController import *
+from VacuumController.SerialVacuumDevice import getExpNumbers
 
 ## @note Backward compatibility between PyTango3 and PyTango7
 if 'PyDeviceClass' not in dir(PyTango): PyTango.PyDeviceClass = PyTango.DeviceClass
