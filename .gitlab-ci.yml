@@ -3,13 +3,16 @@ variables:
   DOCKER_DRIVER: overlay2
   ARTIFACTS_DIR: "$CI_PROJECT_DIR/dist"
   # Set up variables for pushing the generated tags
-  DEPLOY_GIT_REPO: "git.cells.es/$CI_PROJECT_PATH.git"
+  # REPO_URL (set this up  in project->settings->CI/CD settings->Secret variables)
+  # e.g. git.cells.es
+  DEPLOY_GIT_REPO: "$REPO_URL/$CI_PROJECT_PATH.git"
   BOT_NAME: debpack
   # BOT_PASS (set this up  in project->settings->CI/CD settings->Secret variables)
   # ALBA HACK:
   GIT_SSL_NO_VERIFY: 'true'
   DEBFULLNAME: "CI Boot"
-  DEBEMAIL: "controls@cells.es"
+  # DEBEMAIL (set this up  in project->settings->CI/CD settings->Secret variables)
+  DEBEMAIL: "$DEBEMAIL"
 
 
 stages:
