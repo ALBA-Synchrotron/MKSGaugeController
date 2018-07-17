@@ -69,6 +69,7 @@ from fandango.objects import self_locked
 import fandango.functional as fun
 
 from VacuumController import *
+from VacuumController.SerialVacuumDevice import getExpNumbers
 
 ## @note Backward compatibility between PyTango3 and PyTango7
 if 'PyDeviceClass' not in dir(PyTango): PyTango.PyDeviceClass = PyTango.DeviceClass
@@ -395,21 +396,27 @@ class MKSGaugeController(Dev4Tango):
                 self.SVD=SerialVacuumDevice(
                     tangoDevice=self.SerialLine,
                     period=self.Refresh, #Total refresh period divided by number of commands
-                    wait=0.2, #Maximum time waiting for each command to succeed.
+                    wait=0.01, #Maximum time waiting for each command to succeed.
                     retries=3,
                     log=self.LogLevel)
-                self.SVD.setPolledComm(self.CommPrefix+'P1',1.)
-                self.SVD.setPolledComm(self.CommPrefix+'P2',1.)
-                self.SVD.setPolledComm(self.CommPrefix+'P3',1.)
-                self.SVD.setPolledComm(self.CommPrefix+'P4',1.)
-                self.SVD.setPolledComm(self.CommPrefix+'P5',1.)
-                self.SVD.setPolledComm(self.CommPrefix+'C1',5.)
-                self.SVD.setPolledComm(self.CommPrefix+'C2',5.)
-                self.SVD.setPolledComm(self.CommPrefix+'GAUGES',60.)
-                self.SVD.setPolledComm(self.CommPrefix+'VER',60.)
-                [self.SVD.setPolledComm(self.CommPrefix+'PRO%d'%i,15.) for i in (1,2)]
-                [self.SVD.setPolledComm(self.CommPrefix+'RLY%d'%i,15.) for i in range(1,6)]
-                self.SVD.setPolledComm(self.CommPrefix+'RELAYS',15.)
+                    
+                r = 60. #self.Refresh*5
+                self.SVD.setPolledComm(self.CommPrefix+'P1',r)
+                self.SVD.setPolledComm(self.CommPrefix+'P2',self.Refresh)
+                self.SVD.setPolledComm(self.CommPrefix+'P3',r)
+                self.SVD.setPolledComm(self.CommPrefix+'P4',r)
+                self.SVD.setPolledComm(self.CommPrefix+'P5',r)
+
+                r = 60. #self.Refresh*5
+                self.SVD.setPolledComm(self.CommPrefix+'C1',r) #,slow)
+                self.SVD.setPolledComm(self.CommPrefix+'C2',r)
+                [self.SVD.setPolledComm(self.CommPrefix+'PRO%d'%i,r) for i in (1,2)]
+                [self.SVD.setPolledComm(self.CommPrefix+'RLY%d'%i,r) for i in range(1,6)]
+                self.SVD.setPolledComm(self.CommPrefix+'RELAYS',r)
+                
+                r = 60.
+                self.SVD.setPolledComm(self.CommPrefix+'GAUGES',r)
+                self.SVD.setPolledComm(self.CommPrefix+'VER',r)
                 self.SVD.start()
             
         except Exception,e:
@@ -949,7 +956,7 @@ class MKSGaugeControllerClass(PyTango.PyDeviceClass):
         'Refresh':
             [PyTango.DevDouble,
             "Period (in seconds) for the internal refresh thread (1 entire cycle).",
-            [ 3. ] ],
+            [ 0.1 ] ],
         'DefaultStatus':
             [PyTango.DevString,
             "On/Off,On/Off; the expected status for each channel, empty if not used",
@@ -1164,7 +1171,7 @@ MKSGaugeController.read_Missreadings = manageMissreadings
 #    MKSGaugeController class main method
 #
 #==================================================================
-def main():
+if __name__ == '__main__':
     try:
         py = PyTango.PyUtil(sys.argv)
         py.add_TgClass(MKSGaugeControllerClass,MKSGaugeController,'MKSGaugeController')
@@ -1177,6 +1184,3 @@ def main():
         print '-------> Received a DevFailed exception:',traceback.format_exc()
     except Exception,e:
         print '-------> An unforeseen exception occured....',traceback.format_exc()
-        
-if __name__ == '__main__':
-    main()
