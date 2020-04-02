@@ -41,12 +41,6 @@ install_requires = ['fandango',
 
 ## All the following defines are OPTIONAL
 
-## For setup.py located in root folder or submodules
-package_dir = {
-    DS: '.',
-    #'DS/tools': './tools',
-}
-packages = package_dir.keys()
 
 ## Additional files, remember to edit MANIFEST.in to include them in sdist
 package_data = {'': [
@@ -74,9 +68,8 @@ setup(
     license=license,
     description=description,
     install_requires=install_requires,    
-    packages = packages or find_packages(),
-    package_dir= package_dir,
-    entry_points=entry_points,    
+    packages=find_packages(),
+    entry_points=entry_points,
     scripts = scripts,
     include_package_data = True,
     package_data = package_data    
