@@ -69,7 +69,12 @@ from fandango.objects import self_locked
 import fandango.functional as fun
 
 import VacuumController
-from VacuumController import getExpNumbers
+try:
+    #suse
+    from VacuumController import getExpNumbers
+except:
+    #debian
+    from VacuumController.SerialVacuumDevice import getExpNumbers
 from VacuumController import *
 
 ## @note Backward compatibility between PyTango3 and PyTango7
@@ -397,7 +402,7 @@ class MKSGaugeController(Dev4Tango):
                 self.SVD=SerialVacuumDevice(
                     tangoDevice=self.SerialLine,
                     period=self.Refresh, #Total refresh period divided by number of commands
-                    wait=0.01, #Maximum time waiting for each command to succeed.
+                    wait=0.1, #Maximum time waiting for each command to succeed.
                     retries=3,
                     log=self.LogLevel)
                     
