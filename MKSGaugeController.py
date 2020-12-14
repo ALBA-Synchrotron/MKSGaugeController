@@ -406,21 +406,23 @@ class MKSGaugeController(Dev4Tango):
                     retries=3,
                     log=self.LogLevel)
                     
-                r = self.Refresh*10 # For slow commands
+                r = self.Refresh*20 # For slow commands
+                tt = fandango.now()
+                self.SVD.setPolledComm(self.CommPrefix+'GAUGES',r)
                 self.SVD.setPolledComm(self.CommPrefix+'P1',self.Refresh)
                 self.SVD.setPolledComm(self.CommPrefix+'P2',self.Refresh)
                 self.SVD.setPolledComm(self.CommPrefix+'P3',r)
                 self.SVD.setPolledComm(self.CommPrefix+'P4',self.Refresh)
                 self.SVD.setPolledComm(self.CommPrefix+'P5',self.Refresh)
 
-                self.SVD.setPolledComm(self.CommPrefix+'C1',r) #,slow)
-                self.SVD.setPolledComm(self.CommPrefix+'C2',r)
-                [self.SVD.setPolledComm(self.CommPrefix+'PRO%d'%i,r) for i in (1,2)]
-                [self.SVD.setPolledComm(self.CommPrefix+'RLY%d'%i,r) for i in range(1,6)]
-                self.SVD.setPolledComm(self.CommPrefix+'RELAYS',r)
-                
-                self.SVD.setPolledComm(self.CommPrefix+'GAUGES',r)
-                self.SVD.setPolledComm(self.CommPrefix+'VER',r)
+                self.SVD.setPolledComm(self.CommPrefix+'C1',r,tt+10)
+                self.SVD.setPolledComm(self.CommPrefix+'C2',r,tt+11)
+                [self.SVD.setPolledComm(self.CommPrefix+'PRO%d'%i,r,tt+12) 
+                    for i in (1,2)]
+                [self.SVD.setPolledComm(self.CommPrefix+'RLY%d'%i,r,tt+13)
+                    for i in range(1,6)]
+                self.SVD.setPolledComm(self.CommPrefix+'RELAYS',r,tt+14)               
+                self.SVD.setPolledComm(self.CommPrefix+'VER',r,tt+15)
                 self.SVD.start()
             
         except Exception,e:
