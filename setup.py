@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 DS = 'MKSGaugeController'
 description = '%s Tango Device Server'%DS
-version = '4.5.0'
+version = '4.6.0'
 package = DS #'tangods-'+DS.lower()
 
 __doc__ = """
