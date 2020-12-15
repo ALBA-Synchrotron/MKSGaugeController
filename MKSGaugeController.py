@@ -60,8 +60,7 @@ import traceback
 import PyTango
 from PyTango import DevState,AttrQuality,DevFailed
 
-try: import fandango
-except: import PyTango_utils as fandango
+import fandango
 
 from fandango.device import Dev4Tango,TimedQueue
 from fandango.excepts import ExceptionWrapper,Catched,Catched2
